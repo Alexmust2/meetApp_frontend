@@ -1,44 +1,68 @@
 <template>
   <q-layout class="bg-grey-1">
-    <q-header elevated class="text-white" style="background: #24292e" height-hint="61.59">
+    <q-header
+      elevated
+      v-if="route.name != 'auth'"
+      class="text-white"
+      style="background: #24292e"
+      height-hint="61.59"
+    >
       <q-toolbar class="q-py-sm q-px-md">
-        <q-btn round dense flat :ripple="false" :icon="fabGithub" size="19px" color="white" class="q-mr-sm" no-caps />
+        <q-btn
+          round
+          dense
+          flat
+          :ripple="false"
+          :icon="fabGithub"
+          size="19px"
+          color="white"
+          class="q-mr-sm"
+          no-caps
+        />
 
         <q-select
-          ref="search" dark dense standout use-input hide-selected
+          ref="search"
+          dark
+          dense
+          standout
+          use-input
+          hide-selected
           class="GL__toolbar-select"
-          color="black" :stack-label="false" label="Search or jump to..."
-          v-model="text" :options="filteredOptions"
+          color="black"
+          :stack-label="false"
+          label="Search or jump to..."
+          v-model="text"
+          :options="filteredOptions"
           style="width: 300px"
         >
-
           <template v-slot:append>
-            <img src="https://cdn.quasar.dev/img/layout-gallery/img-github-search-key-slash.svg">
+            <img src="https://cdn.quasar.dev/img/layout-gallery/img-github-search-key-slash.svg" />
           </template>
 
           <template v-slot:no-option>
             <q-item>
               <q-item-section>
                 <div class="text-center">
-                  <q-spinner-pie
-                    color="grey-5"
-                    size="24px"
-                  />
+                  <q-spinner-pie color="grey-5" size="24px" />
                 </div>
               </q-item-section>
             </q-item>
           </template>
 
           <template v-slot:option="scope">
-            <q-item
-              v-bind="scope.itemProps"
-              class="GL__select-GL__menu-link"
-            >
+            <q-item v-bind="scope.itemProps" class="GL__select-GL__menu-link">
               <q-item-section side>
                 <q-icon name="collections_bookmark" />
               </q-item-section>
               <q-item-section side :class="{ 'default-type': !scope.opt.type }">
-                <q-btn outline dense no-caps text-color="blue-grey-5" size="12px" class="bg-grey-1 q-px-sm">
+                <q-btn
+                  outline
+                  dense
+                  no-caps
+                  text-color="blue-grey-5"
+                  size="12px"
+                  class="bg-grey-1 q-px-sm"
+                >
                   {{ scope.opt.type || 'Jump to' }}
                   <q-icon name="subdirectory_arrow_left" size="14px" />
                 </q-btn>
@@ -47,19 +71,13 @@
           </template>
         </q-select>
 
-        <div v-if="$q.screen.gt.sm" class="GL__toolbar-link q-ml-xs q-gutter-md text-body2 text-weight-bold row items-center no-wrap">
-          <a href="javascript:void(0)" class="text-white">
-            Pull requests
-          </a>
-          <a href="javascript:void(0)" class="text-white">
-            Issues
-          </a>
-          <a href="javascript:void(0)" class="text-white">
-            Marketplace
-          </a>
-          <a href="javascript:void(0)" class="text-white">
-            Explore
-          </a>
+        <div
+          v-if="$q.screen.gt.sm"
+          class="GL__toolbar-link q-ml-xs q-gutter-md text-body2 text-weight-bold row items-center no-wrap"
+        >
+          <a href="javascript:void(0)" class="text-white"> Задачи </a>
+          <a href="javascript:void(0)" class="text-white"> Календарь </a>
+          <a href="javascript:void(0)" class="text-white"> Мессенджер </a>
         </div>
 
         <q-space />
@@ -96,27 +114,15 @@
 
           <q-btn dense flat no-wrap>
             <q-avatar rounded size="20px">
-              <img src="https://cdn.quasar.dev/img/avatar3.jpg">
+              <img src="https://cdn.quasar.dev/img/avatar3.jpg" />
             </q-avatar>
             <q-icon name="arrow_drop_down" size="16px" />
 
             <q-menu auto-close>
               <q-list dense>
-                <q-item class="GL__menu-link-signed-in">
-                  <q-item-section>
-                    <div>Signed in as <strong>Mary</strong></div>
-                  </q-item-section>
+                <q-item clickable class="GL__menu-link">
+                  <q-item-section> Signed in as <strong>Mary</strong> </q-item-section>
                 </q-item>
-                <q-separator />
-                <q-item clickable class="GL__menu-link-status">
-                  <q-item-section>
-                    <div>
-                      <q-icon name="tag_faces" color="blue-9" size="18px" />
-                      Set your status
-                    </div>
-                  </q-item-section>
-                </q-item>
-                <q-separator />
                 <q-item clickable class="GL__menu-link">
                   <q-item-section>Your profile</q-item-section>
                 </q-item>
@@ -158,16 +164,17 @@
 <script lang="ts">
 import { ref } from 'vue'
 import { fabGithub } from '@quasar/extras/fontawesome-v6'
+import { useRoute } from 'vue-router'
 
 export default {
   name: 'MyLayout',
 
-  setup () {
+  setup() {
     const text = ref('')
     const options = ref(null)
     const filteredOptions = ref([])
-    const search = ref(null) // $refs.search
-
+    const search = ref(null)
+    const route = useRoute()
 
     return {
       fabGithub,
@@ -176,50 +183,55 @@ export default {
       options,
       filteredOptions,
       search,
-
+      route,
     }
-  }
+  },
 }
 </script>
 
-<style lang="sass">
-.GL
-  &__select-GL__menu-link
-    .default-type
-      visibility: hidden
+<style lang="scss">
+.GL {
+  &__select-GL__menu-link {
+    .default-type {
+      visibility: hidden;
+    }
 
-    &:hover
-      background: #0366d6
-      color: white
-      .q-item__section--side
-        color: white
-      .default-type
-        visibility: visible
+    &:hover {
+      background: #0366d6;
+      color: white;
 
-  &__toolbar-link
-    a
-      color: white
-      text-decoration: none
-      &:hover
-        opacity: 0.7
+      .q-item__section--side {
+        color: white;
+      }
 
-  &__menu-link:hover
-    background: #0366d6
-    color: white
+      .default-type {
+        visibility: visible;
+      }
+    }
+  }
 
-  &__menu-link-signed-in,
-  &__menu-link-status
-    &:hover
-      & > div
-        background: white !important
+  &__toolbar-link {
+    a {
+      color: white;
+      text-decoration: none;
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
 
-  &__menu-link-status
-    color: $blue-grey-6
-    &:hover
-      color: $light-blue-9
+  &__menu-link-status {
+    color: $blue-grey-6;
+    &:hover {
+      color: $light-blue-9;
+    }
+  }
 
-  &__toolbar-select.q-field--focused
-    width: 450px !important
-    .q-field__append
-      display: none
+  &__toolbar-select.q-field--focused {
+    width: 450px !important;
+    .q-field__append {
+      display: none;
+    }
+  }
+}
 </style>
